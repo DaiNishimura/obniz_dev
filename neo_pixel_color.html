@@ -1,0 +1,50 @@
+<!-- HTML Example -->
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://obniz.io/js/jquery-3.2.1.min.js"></script>
+  <script src="https://unpkg.com/obniz@1.13.1/obniz.js"></script>
+</head>
+<body>
+
+<div id="obniz-debug"></div>
+<h1>LED</h1>
+
+<button id="on">ON</button>
+<button id="off">OFF</button>
+  
+<script>
+//新しいObnizを登録
+var obniz = new Obniz("2897-7249");
+
+//通信開始
+obniz.onconnect = async function () {
+
+//NeoPixcelColorの登録
+    var led = obniz.wired("WS2812B", {gnd:0, vcc: 1, din: 2});
+    
+    var rgb = 0;
+   
+    //RGBの数値アップ関数の登録
+    var rgb_up = function(){
+        rgb++;
+        console.log(rgb);
+        led.rgbs([[rgb, 0, 0],[0, rgb, 0],[0, rgb, 0],[0, rgb, 0]])
+
+        //50ミリ秒毎にカウントアップ
+        //RGBが255を超えたら停止
+        var rgb_out = setTimeout(rgb_up, 50);
+        if(rgb > 254){　
+            clearTimeout(rgb_out);　//rgb_outをclearTimeoutで指定している
+        }
+  }
+  
+  ////グラデーション開始/////
+  rgb_up();
+    
+  };
+  
+ 
+</script>
+</body>
+</html>
